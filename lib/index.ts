@@ -1,9 +1,9 @@
 import { _ } from 'atp-pointfree';
-import * as React from "react";
 import { createLengthProp, createValueUpdater, updateCss } from "./common";
 
+// Reference: https://www.w3schools.com/cssref/
 export * from "./a";
-export { border } from "./border";
+export * from "./b";
 export * from "./transform";
 
 export const createCss = _;

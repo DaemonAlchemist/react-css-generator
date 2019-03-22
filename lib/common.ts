@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export type CSSGenerator = (css:React.CSSProperties) => React.CSSProperties;
 
 export type PropUpdater = (prop:string, value:string) => (css:React.CSSProperties) => React.CSSProperties;

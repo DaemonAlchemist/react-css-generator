@@ -16,7 +16,6 @@ const createBorderStyleUpdater = (prop:string) => ({
 });
 const createBorderSideUpdater = (side:string) => ({
     color: createValueUpdater(`border${side}color`),
-    is: createLengthProp(`border${side}`),
     style: createBorderStyleUpdater(`border${side}Style`),
     width: createLengthProp(`border${side}Width`),
 });
@@ -74,6 +73,7 @@ export const border = {
         },
     },
     right: createBorderSideUpdater("Right"),
+    spacing: createLengthProp("borderSpacing"), //TODO: Handle two values
     style: createBorderStyleUpdater("borderStyle"),
     top: createBorderSideUpdater("Top"),
     width: createValueUpdater("borderWidth"),

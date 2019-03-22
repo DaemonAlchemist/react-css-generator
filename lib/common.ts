@@ -5,6 +5,11 @@ export const updateCss = (prop:string, value:string) => (css:React.CSSProperties
     [prop]: value
 });
 
+export const concatCss = (prop:string, value:string) => (css:any):React.CSSProperties => ({
+    ...css,
+    [prop]: css[prop] ? `${value} ${css[prop]}` : value
+});
+
 export const createValueUpdater = (prop:string) => (value:string) => updateCss(prop, value);
 
 export const createCalcUpdater = (prop:string) => (value:string) => updateCss(prop, `calc(${value})`);

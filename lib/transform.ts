@@ -1,4 +1,4 @@
-import { concatCss, updateCss } from "./common";
+import { concatCss, createCalcUpdater, createLengthProp, createLengthPropUpdater, PropUpdater, updateCss } from "./common";
 
 // Matrix transformations
 export const matrix = (a:number, b:number, c:number, d:number, tx:number, ty:number) =>
@@ -43,8 +43,44 @@ export const skewZ = (z:number) => concatCss("transform", `skewZ(${z})`);
 export const perspective = (n:number) => concatCss("transform", `perspective(${n})`);
 
 // Misc
+const updateOriginAxis = (index:number):PropUpdater => (prop:string, value:string) => (css:React.CSSProperties):React.CSSProperties => {
+    let parts = ((css.transformOrigin as string) || "transformOrigin 0 0 0").split(" ");
+    parts[index] = value;
+    return {
+        ...css,
+        transformOrigin: parts.join(" ")
+    };
+};
+const createAxisProp = (prop:string, updater:PropUpdater = updateCss) => ({
+    calc: createCalcUpdater(prop),
+    is: createLengthPropUpdater(prop, updater),
+});
+
 export const transform = {
     inherit: updateCss("transform", "none"),
     initial: updateCss("transform", "initial"),
     none: updateCss("transform", "none"),
+    origin: {
+        inherit: updateCss("transformOrigin", "inherit"),
+        initial: updateCss("transformOrigin", "initial"),
+        x: {
+            center: updateOriginAxis(1)("transformOrigin", "center"),
+            left: updateOriginAxis(1)("transformOrigin", "left"),
+            right: updateOriginAxis(1)("transformOrigin", "right"),
+            ...createAxisProp("transformOrigin", updateOriginAxis(1)),
+        },
+        y: {
+            bottom: updateOriginAxis(2)("transformOrigin", "bottom"),
+            center: updateOriginAxis(2)("transformOrigin", "center"),
+            top: updateOriginAxis(2)("transformOrigin", "top"),
+            ...createAxisProp("transformOrigin", updateOriginAxis(2)),
+        },
+        z: createAxisProp("transformOrigin", updateOriginAxis(3))
+    },
+    style: {
+        flat: updateCss("transformStyle", "flat"),
+        inherit: updateCss("transformStyle", "inherit"),
+        initial: updateCss("transformStyle", "initial"),
+        preserve3d: updateCss("transformStyle", "preserve-3d"),
+    }
 };
